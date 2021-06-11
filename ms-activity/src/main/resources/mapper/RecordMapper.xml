@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sicnu.activity.mapper.IRecordMapper">
+    <insert id="save" parameterType="record">
+        INSERT INTO `student_record`(`student_id`, `activity_id`, `title`, `score`, `status`)
+        VALUES (#{record.studentId}, #{record.activityId}, #{record.title}, #{record.score}, #{record.status});
+    </insert>
+    <update id="updateRecordsStatus">
+        UPDATE `student_record` SET `status` = #{record.status}
+        WHERE `activity_id` = #{record.activityId}
+        <if test="record.studentId != null">
+            and `student_id` = #{record.studentId}
+        </if>
+    </update>
+
+    <select id="countStudentActivity" resultType="java.lang.Integer">
+        select count(*)
+        from `student_record`
+        where `student_id` = #{studentId}
+          and `activity_id` = #{activityId}
+    </select>
+    <select id="getRecordByActivityId" resultType="cn.sicnu.common.model.entity.Record">
+        select `id`,
+               `student_id`,
+               `activity_id`,
+               `title`,
+               `score`,
+               `is_valid`,
+               `create_date`,
+               `update_date`,
+               `status`
+        from `student_record`
+        where `activity_id` = #{activityId};
+
+    </select>
+    <select id="countScoreByStudentId" resultType="java.lang.Long">
+        select count(`score`)
+        from `student_record`
+        where `student_id` = #{studentId}
+          and `status` = 4
+    </select>
+    <select id="getRecordByStatusAndStudentId" resultType="cn.sicnu.common.model.entity.Record">
+        select `id`,
+               `student_id`,
+               `activity_id`,
+               `title`,
+               `score`,
+               `is_valid`,
+               `create_date`,
+               `update_date`,
+               `status`
+        from `student_record`
+        where `student_id` = #{studentId}
+          and `status` = #{status};
+    </select>
+    <select id="selectRecordDetail" resultType="cn.sicnu.common.model.entity.Record"
+            parameterType="cn.sicnu.common.model.entity.Record">
+        select *
+        from student_record
+        where activity_id = #{record.activityId}
+          and `student_id` = #{record.studentId}
+    </select>
+
+
+
+</mapper>

@@ -1,0 +1,82 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: ms-test
+          uri: lb://ms-test
+          predicates:
+            - Path=/test/**
+          filters:
+            - StripPrefix=1
+
+        - id: ms-student
+          uri: lb://ms-student
+          predicates:
+            - Path=/student/**
+          filters:
+            - StripPrefix=1
+
+        - id: ms-oauth2-server
+          uri: lb://ms-oauth2-server
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+
+        - id: ms-school
+          uri: lb://ms-school
+          predicates:
+            - Path=/school/**
+          filters:
+            - StripPrefix=1
+        - id: ms-third
+          uri: lb://ms-third
+          predicates:
+            - Path=/third/**
+          filters:
+            - StripPrefix=1
+        - id: ms-activity
+          uri: lb://ms-activity
+          predicates:
+            - Path=/activity/**
+          filters:
+            - StripPrefix=1
+
+
+secure:
+  ignore:
+    urls: # 配置白名单路径
+      - /actuator/**
+      - /auth/oauth/**
+      - /auth/account/send/**
+      - /student/login
+      - /student/register
+      - /student/info
+      - /school/login
+      - /school/register
+      - /school/info
+      - /third/code/**
+      - /activity/common/**
+      #- /test/**
+
+# 配置 Eureka Server 注册中心
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka/
+
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd:hh.mm.ss} [%thread] %-5level %logger{50} - %msg%n'

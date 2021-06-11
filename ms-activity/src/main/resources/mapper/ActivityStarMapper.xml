@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sicnu.activity.mapper.IActivityStarMapper">
+    <insert id="insertStar">
+        insert into `activity_star` (student_id, activity_id)
+        values (#{studentId}, #{activityId})
+    </insert>
+    <delete id="deleteStar" parameterType="java.lang.Long">
+        delete
+        from `activity_star`
+        where `id` = #{id}
+    </delete>
+
+
+    <select id="countStar" resultType="java.lang.Integer" parameterType="java.lang.Long">
+        select count(*)
+        from `activity_star`
+        where `activity_id` = #{activityId}
+    </select>
+    <select id="selectStar" resultType="cn.sicnu.common.model.entity.ActivityStar">
+        select *
+        from `activity_star`
+        where activity_id = #{activityId}
+          and `student_id` = #{studentId}
+    </select>
+</mapper>

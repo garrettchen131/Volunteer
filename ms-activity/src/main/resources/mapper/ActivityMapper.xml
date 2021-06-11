@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sicnu.activity.mapper.IActivityMapper">
+
+    <insert id="save" parameterType="activity" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `activity`
+            (
+             `school_id`,
+             `title`,
+             `content`,
+             `score`,
+             `status`,
+             `total_number`,
+             `subtitle`,
+             `image_url`,
+             `start_time`,
+             `end_time`,
+             `address`
+             )
+        VALUES (
+                #{activity.schoolId},
+                #{activity.title},
+                #{activity.content},
+                #{activity.score},
+                #{activity.status},
+                #{activity.totalNumber},
+                #{activity.subtitle},
+                #{activity.imageUrl},
+                #{activity.startTime},
+                #{activity.endTime},
+                #{activity.address}
+                );
+    </insert>
+    <update id="updateActivityPersonNumber">
+        UPDATE `activity` set `person_number` = `person_number` + 1 where `id` = #{id} and `person_number` &lt; `total_number`
+    </update>
+    <update id="updateActivityStatus">
+        UPDATE `activity` SET `status` = #{status} WHERE `id` = #{id}
+    </update>
+    <update id="incrementActivityStar" parameterType="java.lang.Long">
+        update `activity`
+        set `star` = `star` + 1
+        where `id` = #{activityId}
+    </update>
+
+    <update id="decrementActivityStar" parameterType="java.lang.Long">
+        update `activity`
+        set `star` = `star` - 1
+        where `id` = #{activityId}
+    </update>
+
+    <select id="selectSchoolActivitiesOnPageBySchoolId" resultType="cn.sicnu.common.model.entity.Activity">
+        select `id`,
+               `school_id`,
+               `title`,
+               `content`,
+               `score`,
+               `status`,
+               `person_number`,
+               `total_number`,
+               `star`,
+               `is_valid`,
+               `create_date`,
+               `update_date`,
+               `subtitle`,
+               `image_url`,
+               `start_time`,
+               `end_time`,
+               `address`
+        from `activity`
+        where `school_id` = #{schoolId}
+        order by `status` asc
+        limit #{page},#{size}
+    </select>
+    <select id="selectSchoolActivitiesOnPageBySchoolName" resultType="cn.sicnu.common.model.entity.Activity">
+        select `id`,
+               `school_id`,
+               `title`,
+               `content`,
+               `score`,
+               `status`,
+               `person_number`,
+               `total_number`,
+               `star`,
+               `is_valid`,
+               `create_date`,
+               `update_date`,
+               `subtitle`,
+               `image_url`,
+               `start_time`,
+               `end_time`,
+               `address`
+        from `activity`
+        where `school_id` in (select `id` from `school` where `school_name` = #{schoolName})
+          and `status` in (0, 2)
+        order by `start_time`
+        limit #{page},#{size};
+
+    </select>
+    <select id="selectActivityById" resultType="cn.sicnu.common.model.entity.Activity">
+        select `id`,
+               `school_id`,
+               `title`,
+               `content`,
+               `score`,
+               `status`,
+               `person_number`,
+               `total_number`,
+               `star`,
+               `is_valid`,
+               `create_date`,
+               `update_date`,
+               `subtitle`,
+               `image_url`,
+               `start_time`,
+               `end_time`,
+               `address`
+        from `activity`
+        where `id` = #{id}
+    </select>
+    <select id="selectActivityByIds" resultType="cn.sicnu.common.model.entity.Activity">
+        select  `id`,
+                `school_id`,
+                `title`,
+                `content`,
+                `score`,
+                `status`,
+                `person_number`,
+                `total_number`,
+                `star`,
+                `is_valid`,
+                `create_date`,
+                `update_date`,
+                `subtitle`,
+                `image_url`,
+                `start_time`,
+                `end_time`,
+                `address`
+        from `activity`
+        where `id` in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <select id="countActivityIfPresent" resultType="int">
+        select count(*)
+        from `activity`
+        where `title` = #{title}
+          and `school_id` = #{id}
+          and `status` in
+        <foreach collection="status" item="code" index="index" open="(" close=")" separator=",">
+            #{code}
+        </foreach>
+    </select>
+
+</mapper>

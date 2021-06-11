@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sicnu.oauth.mapper.IAccountMapper">
+    <insert id="save" parameterType="cn.sicnu.common.model.entity.Account" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `account`(`username`,`password`,`email`,`phone`,`id_card`,`roles`)
+        VALUES (#{account.username}, #{account.password}, #{account.email}, #{account.phone}, #{account.idCard}, #{account.roles});
+    </insert>
+    <select id="selectByAccountInfo" resultType="cn.sicnu.common.model.entity.Account" parameterType="string">
+        SELECT
+            id,
+            username,
+            password,
+            email,
+            phone,
+            id_card,
+            roles,
+            is_valid,
+            create_date,
+            update_date
+        FROM `account`
+        WHERE (`username` = #{account} or `phone` = #{account} or `email` = #{account})
+
+    </select>
+    <select id="selectByPhone" resultType="cn.sicnu.common.model.entity.Account"
+            parameterType="java.lang.String">
+        SELECT
+            id,
+            username,
+            password,
+            email,
+            phone,
+            id_card,
+            roles,
+            is_valid,
+            create_date,
+            update_date
+        FROM `account`
+        WHERE `phone` = #{phone}
+    </select>
+    <select id="selectByUsername" resultType="cn.sicnu.common.model.entity.Account"
+            parameterType="java.lang.String">
+        SELECT
+            id,
+            username,
+            password,
+            email,
+            phone,
+            id_card,
+            roles,
+            is_valid,
+            create_date,
+            update_date
+        FROM `account`
+        WHERE `username` = #{username}
+    </select>
+    <select id="selectByEmail" resultType="cn.sicnu.common.model.entity.Account">
+        SELECT
+            id,
+            username,
+            password,
+            email,
+            phone,
+            id_card,
+            roles,
+            is_valid,
+            create_date,
+            update_date
+        FROM `account`
+        WHERE `email` = #{email}
+    </select>
+    <select id="selectById" resultType="cn.sicnu.common.model.entity.Account">
+        SELECT
+            id,
+            username,
+            password,
+            email,
+            phone,
+            id_card,
+            roles,
+            is_valid,
+            create_date,
+            update_date
+        FROM `account`
+        WHERE `id` = #{id}
+    </select>
+</mapper>

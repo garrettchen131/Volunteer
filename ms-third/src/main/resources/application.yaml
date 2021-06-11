@@ -1,0 +1,75 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: ms-third
+
+  redis:
+    port: 6379
+    host: 127.0.0.1
+    timeout: 3000
+    password: 420130zxc
+    database: 2
+
+  swagger:
+    base-package: cn.sicnu.common
+    title: swagger-title
+
+# 配置 Eureka Server 注册中心
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://localhost:8080/eureka/
+
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd:hh.mm.ss} [%thread] %-5level %logger{50} - %msg%n'
+  level:
+    cn.sicnu: info
+
+contract:
+  cryptoMaterial:
+    certPath: "conf"
+    caCert: "conf/ca.crt"
+    sslCert: "conf/sdk.crt"
+    sslKey: "conf/sdk.key"
+  network:
+    peers:
+      - "139.9.205.50:20201"
+      - "139.9.205.50:20200"
+      - "139.9.205.50:20202"
+      - "139.9.205.50:20203"
+  account:
+    keyStoreDir: ""
+    accountFilePath: "0xda50b7238379d1dee946a0551874a5a97ddd2602.pem"
+    accountFileFormat: "pem"
+    accountAddress: "0xdcc703c0e500b653ca82273b7bfad8045d85a470"
+  #  password: ""
+  address: "0x62f46e581830780d548c3881f2e93c5cc31c6ae4"
+
+account:
+  keyStoreDir: "account"
+  #  accountFilePath: "conf"
+  accountFileFormat: "pem"
+#  accountAddress: "0x"
+#  password: ""
+
+
+mail:
+  server:
+    host: smtp.qq.com
+    port: 587
+    username: 974212451@qq.com
+    password:
+
+cloud:
+  cos:
+    secretId:
+    secretKey:
+    bucketName: axinihao-1257562903
+    regionName: ap-chengdu
+    url: https://axinihao-1257562903.cos.ap-chengdu.myqcloud.com/

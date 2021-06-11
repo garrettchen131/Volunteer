@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.sicnu.school.mapper.ISchoolMapper">
+
+    <insert id="save" parameterType="school" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `school` (`account_id`, `nickname`, `school_name`, `avatar_url`)
+        VALUES (#{school.accountId}, #{school.nickname}, #{school.schoolName}, #{school.avatarUrl})
+    </insert>
+    <update id="updateAccountIdById" parameterType="long">
+        UPDATE `school`
+        SET `account_id` = #{accountId}
+        WHERE `id` = #{id}
+    </update>
+    <select id="selectSchoolByAccountId" resultType="cn.sicnu.common.model.entity.School">
+        SELECT * FROM `school`
+    </select>
+    <select id="selectSchoolById" resultType="cn.sicnu.common.model.entity.School">
+        select `id`,
+               `account_id`,
+               `school_name`,
+               `nickname`,
+               `avatar_url`,
+               `is_valid`,
+               `create_date`,
+               `update_date`
+        from `school`
+        where id = #{id}
+    </select>
+</mapper>
